@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Musicians</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="jquery-3.3.1.js"></script>
+    <script>
+        function playPause(id) {
+            $("table#artists td audio").slideUp();
+            $("table#artists td:nth-child(" + id + ") audio").slideDown();
+
+            var all = $("td audio");
+            for (var i = 0; i < all.length; i++) {
+                all[i].pause();
+            }
+
+            var audio = $("td:nth-child(" + id + ") audio")[0];
+            if (audio.paused)
+                audio.play();
+            else
+                audio.pause();
+        }
+
+        $(document).ready(function () {
+            for (var i = 1; i <= 4; i++) {
+                $("table#artists td:nth-child(" + i + ")").click(function () {
+                    playPause($(this).index() + 1);
+                });
+            }
+
+            $(".buy-button").click(function () {
+                var artist = $(this).parent().text();
+
+                $("div#cart table").append(`<tr style="display: none;"><td>` + artist + `</td><td><button>Supprimer</button></td></tr>`);
+
+                $("div#cart table tr:last-child").fadeIn();
+
+                $("div#cart button").click(function () {
+                    $(this).parent().parent().fadeOut(function () {
+                        $(this).remove();
+                    });
+                });
+
+
+                // Working with slideDown is slightly messier
+                // $("div#cart table").append(`<tr style="display: none;"><td></td><td></td></tr>`)
+
+                // var artist = $(this).parent().text();
+
+                // var dernierLigne = $("div#cart table tr:last-child");
+
+                // dernierLigne.slideDown(function () {
+                //     dernierLigne.empty();
+
+                //     dernierLigne.append(`<td>` + artist + `</td><td><button>Supprimer</button></td>`)
+                //     $("div#cart button").click(function () {
+                //         $(this).parent().parent().fadeOut(function () {
+                //             $(this).remove();
+                //         });
+                //     });
+                // });
+
+            })
+        });
+
+
+    </script>
+</head>
+
+<body>
+    <h1 align="center">Musique classique</h1>
+    <table align="center" id="artists">
+        <tr>
+            <th><img class="buy-button" src="buy.png">Ludwig van Beethoven </th>
+            <th><img class="buy-button" src="buy.png">Frédéric Chopin</th>
+            <th><img class="buy-button" src="buy.png">Johann Sebastian Bach </th>
+            <th><img class="buy-button" src="buy.png">Amadeus Mozart</th>
+        </tr>
+        <tr>
+            <td>
+                <img width="300" height="350" src="images/beethoven.jpg">
+                <audio src="audio/beethoven.mp3" controls></audio>
+            </td>
+            <td>
+                <img width="300" height="350" src="images/chopin.jpg">
+                <audio src="audio/chopin.mp3" controls></audio>
+            </td>
+            <td>
+                <img width="300" height="350" src="images/bach.jpg">
+                <audio src="audio/bach.mp3" controls></audio>
+            </td>
+            <td>
+                <img width="300" height="350" src="images/mozart.jpg">
+                <audio src="audio/mozart.mp3" controls></audio>
+            </td>
+        </tr>
+    </table>
+
+    <div id="cart">
+        <table>
+            <tr>
+                <th colspan="2">Shopping cart :</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
